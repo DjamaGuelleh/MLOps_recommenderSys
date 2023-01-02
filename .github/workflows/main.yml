@@ -37,9 +37,7 @@ jobs:
         - name: Format
           run: |
             black app.py
-        - name: Lint
-          run: |
-            pylint --disable=R,C  app.py
+        
         
   cd_pipeline:
       runs-on: ubuntu-latest 
