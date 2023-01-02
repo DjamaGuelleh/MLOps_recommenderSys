@@ -41,13 +41,21 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
       -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
         name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{secrets.DOCKER_USER}}
-          password: ${{secrets.DOCKER_HUB_ACCESS_TOKEN}}  
-          
-      - name: Build the Docker image # push The image to the docker hub
-        run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME:latest
-      - name: Docker Push
-        run: docker push $DOCKER_USER/$REPO_NAME:latest
+          username: ${{ secrets.DOCKERHUB_USER}}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: djz4/mlops:latest
